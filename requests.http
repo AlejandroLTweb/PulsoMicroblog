@@ -1,0 +1,88 @@
+@base = http://localhost:4000
+@postId = REEMPLAZA_CON_UN_ID
+
+### Salud de la API
+GET {{base}}/api/health
+
+### Listado público
+GET {{base}}/api/posts
+
+### Login administrador
+# @name login
+POST {{base}}/api/auth/login
+Content-Type: application/json
+
+{
+  "usuario": "administrador",
+  "password": "cambia-esta-contrasena"
+}
+
+### Crear publicación (admin)
+POST {{base}}/api/posts
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "contenido": "Primera publicación de prueba para la PEC 5.",
+  "privado": false
+}
+
+### Editar publicación (admin)
+PATCH {{base}}/api/posts/{{postId}}
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "contenido": "Texto actualizado desde REST Client.",
+  "privado": true
+}
+
+### Reaccionar sin registro
+POST {{base}}/api/posts/{{postId}}/reactions
+Content-Type: application/json
+
+{
+  "tipo": "like",
+  "visitorId": "visitante-prueba-123456"
+}
+
+### Comentar sin registro
+POST {{base}}/api/posts/{{postId}}/comments
+Content-Type: application/json
+
+{
+  "nombre": "Ada",
+  "texto": "Comentario de prueba desde el archivo HTTP."
+}
+
+### Ver también publicaciones privadas como administrador
+GET {{base}}/api/posts
+Authorization: Bearer {{login.response.body.token}}
+
+### Eliminar comentario como administrador
+DELETE {{base}}/api/posts/{{postId}}/comments/REEMPLAZA_POR_ID_COMENTARIO
+Authorization: Bearer {{login.response.body.token}}
+
+### Crear publicación con imagen o GIF
+POST {{base}}/api/posts
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: multipart/form-data; boundary=MicroblogBoundary
+
+--MicroblogBoundary
+Content-Disposition: form-data; name="contenido"
+
+Publicación con archivo multimedia
+--MicroblogBoundary
+Content-Disposition: form-data; name="privado"
+
+true
+--MicroblogBoundary
+Content-Disposition: form-data; name="imagen"; filename="ejemplo.gif"
+Content-Type: image/gif
+
+< ./ejemplo.gif
+--MicroblogBoundary--
+
+### Borrar publicación (admin)
+DELETE {{base}}/api/posts/{{postId}}
+Authorization: Bearer {{login.response.body.token}}

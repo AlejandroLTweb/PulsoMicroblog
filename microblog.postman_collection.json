@@ -1,0 +1,80 @@
+{
+  "info": {
+    "name": "PEC 5 · Microblog Pulso",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base", "value": "http://localhost:4000" },
+    { "key": "token", "value": "" },
+    { "key": "postId", "value": "REEMPLAZA_CON_UN_ID" }
+  ],
+  "item": [
+    {
+      "name": "Listar publicaciones",
+      "request": { "method": "GET", "url": "{{base}}/api/posts" }
+    },
+    {
+      "name": "Login administrador",
+      "event": [{
+        "listen": "test",
+        "script": { "exec": ["const data = pm.response.json();", "if (data.token) pm.collectionVariables.set('token', data.token);"] }
+      }],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"usuario\": \"administrador\",\n  \"password\": \"cambia-esta-contrasena\"\n}" },
+        "url": "{{base}}/api/auth/login"
+      }
+    },
+    {
+      "name": "Crear publicación",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": { "mode": "raw", "raw": "{\n  \"contenido\": \"Publicación creada desde Postman\",\n  \"privado\": false\n}" },
+        "url": "{{base}}/api/posts"
+      }
+    },
+    {
+      "name": "Editar publicación",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": { "mode": "raw", "raw": "{\n  \"contenido\": \"Publicación actualizada\",\n  \"privado\": true\n}" },
+        "url": "{{base}}/api/posts/{{postId}}"
+      }
+    },
+    {
+      "name": "Añadir comentario",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Ada\",\n  \"texto\": \"Comentario desde Postman\"\n}" },
+        "url": "{{base}}/api/posts/{{postId}}/comments"
+      }
+    },
+    {
+      "name": "Dar like",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"tipo\": \"like\",\n  \"visitorId\": \"visitante-postman-12345\"\n}" },
+        "url": "{{base}}/api/posts/{{postId}}/reactions"
+      }
+    },
+    {
+      "name": "Borrar publicación",
+      "request": {
+        "method": "DELETE",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": "{{base}}/api/posts/{{postId}}"
+      }
+    }
+  ]
+}
