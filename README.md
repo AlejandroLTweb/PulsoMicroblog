@@ -55,8 +55,8 @@ PEC 5/
 
 Requisitos: Node.js 20 o posterior, npm y una base MongoDB Atlas accesible.
 
-1. Copia `backend/.env.example` como `backend/.env` y completa `MONGODB_URI`, `MONGODB_DB`, `JWT_SECRET`, `ADMIN_USERNAME` y `ADMIN_PASSWORD`.
-2. Copia `frontend/.env.example` como `frontend/.env`.
+1. Crea localmente `backend/.env` y define `MONGODB_URI`, `MONGODB_DB`, `JWT_SECRET`, `ADMIN_USERNAME`, `ADMIN_PASSWORD`, `PORT` y `CLIENT_ORIGIN`. Este archivo está ignorado por Git.
+2. Crea localmente `frontend/.env` con `VITE_API_URL=http://localhost:4000`. También está ignorado por Git.
 3. Desde la raíz ejecuta `npm run install:all`.
 4. Prepara el usuario administrador existente o créalo de forma controlada con `cd backend` y `npm run seed:admin`. El script guarda únicamente el hash de la contraseña.
 5. En una terminal ejecuta `npm run dev:backend`.

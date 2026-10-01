@@ -15,7 +15,7 @@ Microblog full stack llamado Pulso. Solo el administrador autenticado puede crea
 
 - JavaScript ES modules; nombres de variables y funciones en `camelCase`.
 - Respuestas de API en JSON salvo `204 No Content`.
-- Secretos solo en `.env`; mantener `.env.example` sin credenciales reales.
+- Secretos solo en archivos `.env` locales; no subirlos ni publicar archivos de ejemplo con esa extensión.
 - El autor de una publicación siempre se obtiene del token, nunca del body.
 - No crear endpoint de registro público.
 - Las publicaciones privadas deben filtrarse en el backend; nunca basta con ocultarlas en React.
